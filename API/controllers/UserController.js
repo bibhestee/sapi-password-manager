@@ -71,6 +71,47 @@ class UserController {
     delete newUser.updatedAt;
     res.status(201).json(newUser);
   }
+
+
+  // Signin Handler
+  static async signin(req, res) {
+    const { password, email } = req.body;
+    if (!password) {
+      res.status(400).json({ error: 'password missing' });
+      return;
+    }
+    if (!email) {
+      res.status(400).json({ error: 'email missing' });
+      return;
+    }
+
+    const filter = { email };
+    const user = await mysqldb.get(User, filter);
+
+    try {
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+            res.status(400).json({ error: 'incorrect password' });
+            return;
+        }
+    } catch (err){
+        console.log(err);
+        res.status(500).json({ error: 'internal server error' });
+    }
+
+    if (!user) {
+      res.status(400).json({ error: 'account not found' });
+      return;
+    }
+
+    // generates jwt
+    const token = jwt.sign({ email }, process.env.SECRET_KEY, { expiresIn: '15h' });
+    delete user.password;
+    delete user.createdAt;
+    delete user.updatedAt;
+    res.setHeader('Access-Control-Expose-Headers', 'Authorization');
+    res.status(200).header('Authorization', `Bearer ${token}`).json(user);
+  }
 }
 
 module.exports = UserController;
