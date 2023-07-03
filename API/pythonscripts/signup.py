@@ -3,7 +3,7 @@ import requests
 
 def signup():
     data = {
-            'username': 'Helen', 'email': 'Abiola@gmail.com', 'password': 'Abiola',
+            'username': 'Bola', 'email': 'bola@gmail.com', 'password': 'Bola2001',
             }
     header = {'Content-Type': 'application/json'}
     res = requests.post('http://localhost:3002/api/v1/signup', headers=header, json=data)
