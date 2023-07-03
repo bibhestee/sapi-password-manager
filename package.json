@@ -4,7 +4,8 @@
   "description": "SAPI is a secure password manager API that allows users to securely store and manage their passwords. This api is provided with high security measures to prevent attacks, penetrations, and injection attacks.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-server": "nodemon ./API/server.js"
   },
   "repository": {
     "type": "git",
@@ -18,10 +19,14 @@
   "homepage": "https://github.com/bibhestee/sapi-password-manager#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "joi": "^17.9.2",
+    "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.4.3",
     "node": "^20.3.1",
+    "nodemon": "^2.0.22",
     "sequelize": "^6.32.1",
     "uuid": "^9.0.0"
   }
