@@ -1,0 +1,28 @@
+{
+  "name": "sapi-password-manager",
+  "version": "1.0.0",
+  "description": "SAPI is a secure password manager API that allows users to securely store and manage their passwords. This api is provided with high security measures to prevent attacks, penetrations, and injection attacks.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bibhestee/sapi-password-manager.git"
+  },
+  "author": "Alausa Abdulqoyum, Abdullah Abdulbasit",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bibhestee/sapi-password-manager/issues"
+  },
+  "homepage": "https://github.com/bibhestee/sapi-password-manager#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mysql2": "^3.4.3",
+    "node": "^20.3.1",
+    "sequelize": "^6.32.1",
+    "uuid": "^9.0.0"
+  }
+}
