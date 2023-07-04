@@ -36,7 +36,7 @@ class UserController {
         return;
       }
       else if (result === 'username') {
-        res.status(400).json({ error: 'username should have minimum of 3 characters and maximum of 12 characters' });
+        res.status(400).json({ error: 'username should have minimum of 3 characters and maximum of 15 characters' });
         return;
       }
       else if (result === 'password') {
@@ -122,33 +122,47 @@ class UserController {
     res.status(200).header('Authorization', `Bearer ${token}`).json(user);
   }
 
-  // Forget Password Handler
-  static async setPassword(req, res) {
-    console.log(req.body)
-    const { email, securityQuestion, newPassword, confirmPassword } = req.body;
+  // Change Password Handler
+  static async changePassword(req, res) {
+    const { email, password, newPassword, securityQuestion } = req.body;
+
+     if (!password) {
+      res.status(400).json({ error: 'password missing' });
+      return;
+    }
+
     if (!newPassword) {
       res.status(400).json({ error: 'new password missing' });
       return;
     }
-    if (!confirmPassword) {
-      res.status(400).json({ error: 'confirm password missing' });
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      res.status(400).json({ error: "password doesn't match"});
-      return;
-    }
+
     if (!email) {
       res.status(400).json({ error: 'email missing' });
       return;
     }
      if (!securityQuestion) {
-      res.status(400).json({ error: 'what is your favourite city?' });
+      res.status(400).json({ error: 'answer missing. What is your favourite city?' });
       return;
     }
 
     const filter = { email };
     const user = await mysqldb.get(User, filter);
+
+    try {
+      if (password) {
+          try {
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+            res.status(400).json({ error: 'incorrect password' });
+            return;
+        }
+    } catch (err){
+        res.status(500).json({ error: 'internal server error' });
+    }
+    }
+    } catch (err) {
+      // Continue
+    }
 
     if (securityQuestion !== user.security) {
       res.status(400).json({ error: 'incorrect answer to security question, pls retry!' });
@@ -164,19 +178,69 @@ class UserController {
     let hashedPwd;
     try {
         hashedPwd = await bcrypt.hash(newPassword, 10);
-        console.log(hashedPwd);
     } catch (err) {
-        console.log(err);
         res.status(500).json({ error: 'internal server error' });
         return;
     }
 
-    const obj = {
-      password: hashedPwd,
+    const updatedUser = await mysqldb.update(User, { email: user.email }, { password: hashedPwd });
+    res.status(200).json({info: `User ${user.username} password successfully updated!`});
+  }
+
+  // Forget Password Handler
+  static async forgetPassword(req, res) {
+    const { email, confirmPassword, newPassword, securityQuestion } = req.body;
+
+
+    if (!newPassword) {
+      res.status(400).json({ error: 'new password missing' });
+      return;
     }
-    const newUser = await mysqldb.update(User, obj);
-    console.log(newUser);
-    res.status(200).json({info: `${User.username} password successfully updated!`});
+
+    if (!confirmPassword) {
+      res.status(400).json({ error: 'confirm password missing' });
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      res.status(400).json({ error: "password doesn't match"});
+      return;
+    }
+
+    if (!email) {
+      res.status(400).json({ error: 'email missing' });
+      return;
+    }
+     if (!securityQuestion) {
+      res.status(400).json({ error: 'answer missing. What is your favourite city?' });
+      return;
+    }
+
+    const filter = { email };
+    const user = await mysqldb.get(User, filter);
+
+
+    if (securityQuestion !== user.security) {
+      res.status(400).json({ error: 'incorrect answer to security question, pls retry!' });
+      return;
+  }
+
+    if (!user) {
+      res.status(400).json({ error: 'account not found' });
+      return;
+    }
+
+    // Hash the password and save to database
+    let hashedPwd;
+    try {
+        hashedPwd = await bcrypt.hash(newPassword, 10);
+    } catch (err) {
+        res.status(500).json({ error: 'internal server error' });
+        return;
+    }
+
+    const updatedUser = await mysqldb.update(User, { email: user.email }, { password: hashedPwd });
+    res.status(200).json({info: `User ${user.username} password successfully updated!`});
   }
 }
 
