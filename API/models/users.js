@@ -25,7 +25,11 @@ User.init({
     defaultValue: DataTypes.UUIDV4,
     unique: true,
     primaryKey: true,
-  }
+  },
+  apiKey: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+  },
 }, {
   tableName: 'users',
   timestamps: true,
@@ -33,6 +37,6 @@ User.init({
 })
 
 User.sync();
-// User.sync({ alter: true });
+//User.sync({ alter: true });
 
 module.exports = { User };

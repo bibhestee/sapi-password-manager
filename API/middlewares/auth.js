@@ -1,8 +1,8 @@
 #!/usr/bin/node
 
 const jwt = require('jsonwebtoken');
-const { User } = require('../../models/users');
-const { mysqldb } = require('../../models/db_engine/db');
+const { User } = require('../models/users');
+const { mysqldb } = require('../models/db_engine/db');
 
 
 async function authorization(req, res, next) {
@@ -24,6 +24,7 @@ async function authorization(req, res, next) {
     }
 
     const filter = { email };
+    res.locals.email = email;
     
     try {
       const user = await mysqldb.get(User, filter);
