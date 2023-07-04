@@ -112,6 +112,33 @@ class UserController {
     res.setHeader('Access-Control-Expose-Headers', 'Authorization');
     res.status(200).header('Authorization', `Bearer ${token}`).json(user);
   }
+
+  static async generateApiKey(req, res) {
+    const email = res.locals.email;
+
+    let apiKey;
+    try {
+      apiKey = `sapi_${ await bcrypt.hash(email, 5)}`;
+    } catch(err) {
+      console.log(err);
+      res.status(500).json({ error: "internal server error"});
+    }
+
+
+    let updatedModel;
+    let user;
+    try {
+      updatedModel = await mysqldb.update(User, { email }, { apiKey });
+
+      if (updatedModel[0] === 1) {
+        user = await mysqldb.get(User, { apiKey }, ['username', 'email', 'apiKey']);
+      }
+      res.status(200).json(user);
+    } catch(err) {
+      console.log(`${err.message}`);
+      res.status(500).json({ error: "internal server error"}); 
+    }
+  }
 }
 
 module.exports = UserController;

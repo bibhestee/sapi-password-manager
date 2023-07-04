@@ -83,9 +83,9 @@ class MysqlClient {
     return null;
   }
 
-  async update(model, filter, field) {
+  async update(model, filter, obj) {
     if (model) {
-      const updatedModel = await model.update(field, { raw: true, where: filter });
+      const updatedModel = await model.update(obj, { raw: true, where: filter });
       return updatedModel
     }
     return null;
