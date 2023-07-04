@@ -20,6 +20,10 @@ User.init({
     type: DataTypes.STRING(255),
     allowNull: false,
   },
+  security: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
