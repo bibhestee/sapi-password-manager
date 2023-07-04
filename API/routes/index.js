@@ -12,6 +12,6 @@ router.get('/', (req, res) => {
 router.post('/signup', UserController.signup);
 router.post('/signin', UserController.signin);
 /* features */
-router.post('/forget-password', UserController.forgetPassword);
+router.post('/forget-password', UserController.setPassword);
 
 module.exports = router;
