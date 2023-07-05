@@ -16,7 +16,7 @@ router.post('/signup', requestLogger, UserController.signup);
 router.post('/signin', requestLogger, UserController.signin);
 /* features: password reset/change */
 router.post('/forget-password', requestLogger, UserController.forgetPassword);
-router.post('/change-password', requestLogger, UserController.changePassword);
+router.post('/change-password', requestLogger, authorization, UserController.changePassword);
 
 router.get('/api-key/generate', requestLogger, authorization, UserController.generateApiKey);
 

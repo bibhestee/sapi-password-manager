@@ -29,9 +29,22 @@ Content-Type: application/json
 {
     "username": "Johndoe",
     "email": "johndoe@gmail.com",
-    "password": "johndoe",
+    "password": "johndoeengineer",
     "securityQuestion": "ilorin"
 }
+
+### Strong password
+
+POST http://localhost:3002/API/v1/signup HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "Pmb",
+    "email": "presidentmb@gmail.com",
+    "password": "President@2022",
+    "securityQuestion": "abuja"
+}
+
 
 
 ### Strong password
