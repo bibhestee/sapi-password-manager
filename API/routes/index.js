@@ -14,6 +14,9 @@ router.get('/', (req, res) => {
 /* signup handler */
 router.post('/signup', UserController.signup);
 router.post('/signin', UserController.signin);
+/* features: password reset/change */
+router.post('/forget-password', UserController.forgetPassword);
+router.post('/change-password', UserController.changePassword);
 
 router.get('/api-key/generate', authorization, UserController.generateApiKey);
 

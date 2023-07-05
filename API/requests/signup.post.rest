@@ -1,0 +1,48 @@
+POST http://localhost:3002/API/v1/signup HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "bibest22",
+    "email": "bibhestee@gmail.com",
+    "password": "Password22@",
+    "securityQuestion": "ilorin"
+}
+
+###
+
+POST http://localhost:3002/API/v1/signup HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "Olamide",
+    "email": "olaideolamide@mail.com",
+    "password": "newpassword",
+    "securityQuestion": "ilorin"
+}
+
+
+### Weak password
+
+POST http://localhost:3002/API/v1/signup HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "Johndoe",
+    "email": "johndoe@gmail.com",
+    "password": "johndoe",
+    "securityQuestion": "ilorin"
+}
+
+
+### Strong password
+
+POST http://localhost:3002/API/v1/signup HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "adam",
+    "email": "adamapple@gmail.com",
+    "password": "Adamapple2@",
+    "securityQuestion": "ilorin"
+}
+
