@@ -1,5 +1,6 @@
 #!/usr/bin/node
 require('dotenv').config();
+const { info, error } = require('../../middlewares/logger');
 // console.log(process.env);
 const Sequelize = require('sequelize');
 const database = process.env.SAPI_DB;
@@ -23,9 +24,9 @@ class MysqlClient {
   async isConnected() {
     try {
       await this.mysqlClient.authenticate();
-      console.log('mysqlClient is connected');
+      info('mysqlClient is connected');
     } catch (err) {
-      console.error(`Unable to connect to database: ${err}`);
+      error(`Unable to connect to database: ${err}`);
     }
   }
 

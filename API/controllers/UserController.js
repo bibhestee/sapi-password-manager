@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt'); // hashes password
 const { mysqldb } = require('../models/db_engine/db');
 const { User } = require('../models/users');
 const validateSignUp = require('../validators/signup')
+const { info, error } = require('../middlewares/logger');
 
 class UserController {
   // Signup Handler
@@ -40,7 +41,7 @@ class UserController {
         return;
       }
     } catch (err) {
-      console.log(err);
+      error(err);
       res.status(500).json({ error: 'internal server error' });
       return;
     }
@@ -57,7 +58,7 @@ class UserController {
         hashedPwd = await bcrypt.hash(password, 10);
         console.log(hashedPwd);
     } catch (err) {
-        console.log(err);
+        error(err);
         res.status(500).json({ error: 'internal server error' });
         return;
     }
@@ -95,7 +96,7 @@ class UserController {
             return;
         }
     } catch (err){
-        console.log(err);
+        error(err);
         res.status(500).json({ error: 'internal server error' });
     }
 
@@ -120,7 +121,7 @@ class UserController {
     try {
       apiKey = `sapi_${ await bcrypt.hash(email, 5)}`;
     } catch(err) {
-      console.log(err);
+      error(err);
       res.status(500).json({ error: "internal server error"});
     }
 
@@ -135,7 +136,7 @@ class UserController {
       }
       res.status(200).json(user);
     } catch(err) {
-      console.log(`${err.message}`);
+      error(`${err.message}`);
       res.status(500).json({ error: "internal server error"}); 
     }
   }
