@@ -96,7 +96,11 @@ class UserController {
 
     const filter = { email };
     const user = await mysqldb.get(User, filter);
-
+    
+    if (!user) {
+      res.status(404).json({ error: 'account not found' });
+      return;
+    }
     try {
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
@@ -243,6 +247,7 @@ class UserController {
 
     const updatedUser = await mysqldb.update(User, { email: user.email }, { password: hashedPwd });
     res.status(200).json({info: `User ${user.username} password successfully updated!`});
+  }
 
   static async generateApiKey(req, res) {
     const email = res.locals.email;

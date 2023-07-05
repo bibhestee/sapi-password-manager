@@ -38,7 +38,7 @@ async function authorization(req, res, next) {
       res.status(500).json({ error: 'internal server error' });
     }
   } else {
-    res.status(401).json({ error: 'unauthorized' });
+    res.status(401).json({ error: 'xunauthorized' });
   }
 }
 
