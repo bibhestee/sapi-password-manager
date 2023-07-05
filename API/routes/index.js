@@ -4,7 +4,7 @@ const express = require('express');
 const authorization = require('../middlewares/auth');
 const UserController = require('../controllers/UserController');
 const rateLimiter = require('../middlewares/rate_limiter');
-
+const { requestLogger } = require('../middlewares/handlers');
 
 const router = express.Router();
 router.get('/', (req, res) => {
@@ -12,14 +12,14 @@ router.get('/', (req, res) => {
 });
 
 /* signup handler */
-router.post('/signup', UserController.signup);
-router.post('/signin', UserController.signin);
+router.post('/signup', requestLogger, UserController.signup);
+router.post('/signin', requestLogger, UserController.signin);
 /* features: password reset/change */
-router.post('/forget-password', UserController.forgetPassword);
-router.post('/change-password', UserController.changePassword);
+router.post('/forget-password', requestLogger, UserController.forgetPassword);
+router.post('/change-password', requestLogger, UserController.changePassword);
 
-router.get('/api-key/generate', authorization, UserController.generateApiKey);
+router.get('/api-key/generate', requestLogger, authorization, UserController.generateApiKey);
 
-router.get('/testlimiter', rateLimiter, UserController.signin);
+router.get('/testlimiter', requestLogger, rateLimiter, UserController.signin);
 
 module.exports = router;

@@ -12,7 +12,8 @@ const { requestLogger, unknownEndpoint, errorHandler } = require('./middlewares/
 // Middlewares
 app.use(express.json());
 app.use(cors());
-app.use(requestLogger()); // Log request to terminal
+
+//app.use(requestLogger()); // Log request to terminal
 app.use(
   treblle({
     apiKey: process.env.TREBLLE_API_KEY,
