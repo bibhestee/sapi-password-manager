@@ -1,12 +1,13 @@
 #!/usr/bin/node
 const { createClient } = require('redis');
 const { promisify } = require('util')
+const { info, error } = require('../../middlewares/logger');
 
 class RedisClient {
   constructor() {
     this.client = createClient();
-    // this.client.on('connect', () => console.log('Redis Client connect to server'));
-    this.client.on('error', (err) => console.log(`Redis not connected to server: ${err}`));
+    this.client.on('connect', () => info('Redis Client connected to server'));
+    this.client.on('error', (err) => error(`Redis not connected to server: ${err}`));
   }
 
   isAlive() {
