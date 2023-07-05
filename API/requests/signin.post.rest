@@ -1,0 +1,25 @@
+POST http://localhost:3002/API/v1/signin HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "bibhestee@gmail.com",
+    "password": "Password22@"
+}
+
+### Account not found
+POST http://localhost:3002/API/v1/signin HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "presidentmb1@gmail.com",
+    "password": "President@2022"
+}
+
+### Incorrect password
+POST http://localhost:3002/API/v1/signin HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "adamapple@gmail.com",
+    "password": "Adamapple2"
+}

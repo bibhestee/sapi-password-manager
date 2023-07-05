@@ -1,12 +1,13 @@
 #!/usr/bin/node
 
 const jwt = require('jsonwebtoken');
-const { v4 } = require('uuid');
+const { v4, validate } = require('uuid');
 const bcrypt = require('bcrypt'); // hashes password
 const { mysqldb } = require('../models/db_engine/db');
 const { User } = require('../models/users');
 const validateSignUp = require('../validators/signup')
 const { info, error } = require('../middlewares/logger');
+const { validatePassword } = require('../validators/password');
 
 class UserController {
   // Signup Handler
@@ -31,7 +32,9 @@ class UserController {
     }
 
     try {
-      const result = await validateSignUp(username, email, password, securityQuestion)
+      const result = await validateSignUp(username, email, password, securityQuestion);
+      const isValid = validatePassword(password);
+
       if (result === 'email') {
         res.status(400).json({ error: 'invalid email, supports gmail and yahoo mails only' });
         return;
@@ -46,6 +49,10 @@ class UserController {
       }
       else if (result === 'securityQuestion') {
         res.status(400).json({ error: 'favourite city should have minimum of 3 characters and maximum of 12 characters' });
+        return;
+      }
+      else if (!isValid) {
+        res.status(400).json({ error: 'password should contain at least 1 Uppercase, 1 lowercase, 1 digit, and 1 special character.'});
         return;
       }
     } catch (err) {
@@ -179,6 +186,11 @@ class UserController {
       res.status(400).json({ error: 'account not found' });
       return;
     }
+    const isValid = validatePassword(newPassword);
+    if (!isValid) {
+        res.status(400).json({ error: 'password should be min of 8 characters and must contain at least 1 Uppercase, 1 lowercase, 1 digit, and 1 special character.'});
+        return;
+      }
 
     // Hash the password and save to database
     let hashedPwd;
@@ -236,6 +248,12 @@ class UserController {
       return;
     }
 
+    const isValid = validatePassword(newPassword);
+    if (!isValid) {
+        res.status(400).json({ error: 'password should be min of 8 characters and must contain at least 1 Uppercase, 1 lowercase, 1 digit, and 1 special character.'});
+        return;
+      }
+      
     // Hash the password and save to database
     let hashedPwd;
     try {
@@ -249,6 +267,7 @@ class UserController {
     res.status(200).json({info: `User ${user.username} password successfully updated!`});
   }
 
+  // Generate API key
   static async generateApiKey(req, res) {
     const email = res.locals.email;
 
