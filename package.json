@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/bibhestee/sapi-password-manager#readme",
   "dependencies": {
+    "@treblle/express": "^0.0.6",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
