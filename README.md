@@ -88,18 +88,52 @@ SAPI is a secure password manager API that allows users to securely store and ma
 ## Endpoints
 
   - ##### Home
+  
+    Home endpoint
+    Method: GET
+    Url: '/'
 
   - ##### Signup
+
+    Signup endpoint
+    Method: POST
+    Params: username, email, password, securityQuestion ('What is your favourite city?')
+    Url: '/signup'
     
   - ##### Signin
 
+    Signin endpoint
+    Method: POST
+    Params: email, password
+    Url: '/signin'
+
   - ##### Change Password
+
+    Change password endpoint
+    Method: POST
+    Params: email, password, newPassword, securityQuestion ('What is your favourite city?')
+    Url: '/change-password'
 
   - ##### Forget Password
 
+    Forget password endpoint
+    Method: POST
+    Params: email, newPassword, confirmPassword, securityQuestion ('What is your favourite city?')
+    Url: '/forget-password'
+
   - ##### API Key
 
+    API key endpoint
+    Method: GET
+    Url: '/api-key/generate'
+
   - ##### Testlimiter
+
+    Testlimiter endpoint
+    Method: GET
+    Url: '/testlimiter'
+
+   #### ONGOING
 
   - ##### Generate Password
 
