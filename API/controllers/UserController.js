@@ -8,6 +8,7 @@ const { User } = require('../models/users');
 const validateSignUp = require('../validators/signup')
 const { info, error } = require('../middlewares/logger');
 const { validatePassword } = require('../validators/password');
+const { generatePassword: autogeneratePassword } = require('../validators/password')
 
 class UserController {
   // Signup Handler
@@ -292,6 +293,33 @@ class UserController {
     } catch(err) {
       error(`${err.message}`);
       res.status(500).json({ error: "internal server error"}); 
+    }
+  }
+
+  // Generate Password Handler
+  static async generatePassword(req, res) {
+    const { length, options, reveal } = req.body;
+
+
+    if (!length) {
+      res.status(400).json({ error: 'no length specified' });
+      return;
+    }
+
+    const password = autogeneratePassword(length, options);
+
+    if (!reveal) {
+      // Hash the password and save to database
+      let hashedPwd;
+      try {
+          hashedPwd = await bcrypt.hash(password, 10);
+      } catch (err) {
+          res.status(500).json({ error: 'internal server error' });
+          return;
+      }
+      res.status(200).json({ password: hashedPwd});
+    } else {
+      res.status(200).json({ password: password });
     }
   }
 }
