@@ -2,11 +2,11 @@
 
 function generatePassword(length, options = {}) {
     const {
-      uppercase = true,
-      lowercase = true,
-      digits = true,
-      symbols = true,
-      exclude = ''
+      uppercase,
+      lowercase,
+      digits,
+      symbols,
+      exclude
     } = options;
 
     let characters = '';
